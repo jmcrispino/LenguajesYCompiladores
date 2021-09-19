@@ -1,9 +1,9 @@
 %{
 /*
  * Sección definiciones:
- *   	- Includes
- *   	- Defines
- *  	- Variables Globales
+ * 		- Includes
+ * 		- Defines
+ * 		- Variables Globales
  */
 	
     #include <stdio.h>
@@ -37,23 +37,23 @@
  * Palabras Reservadas
  */
  
-RES_DIM             "DIM"
-RES_AS              "AS"
+RES_DIM				"DIM"
+RES_AS				"AS"
 RES_IN				"IN"
-RES_WHILE           "WHILE"
+RES_WHILE			"WHILE"
 RES_ENDWHILE		"ENDWHILE"
-RES_IF              "IF"
+RES_IF				"IF"
 RES_ENDIF			"ENDIF"
-RES_AND             "AND"
-RES_OR              "OR"
-RES_NOT             "NOT"
-RES_GET             "GET" 
-RES_ELSE            "ELSE"
+RES_AND				"AND"
+RES_OR				"OR"
+RES_NOT				"NOT"
+RES_GET				"GET"
+RES_ELSE			"ELSE"
 RES_DISPLAY			"DISPLAY"
-RES_TIPO_ENTERO     "integer"
-RES_TIPO_REAL       "real"
-RES_TIPO_STRING     "string"
-RES_CONST           "CONST"
+RES_TIPO_ENTERO		"integer"
+RES_TIPO_REAL		"real"
+RES_TIPO_STRING		"string"
+RES_CONST			"CONST"
 RES_FOR				"FOR"
 RES_TO				"TO"
 RES_NEXT			"NEXT"
@@ -66,26 +66,26 @@ LETRA [a-zA-ZáéíóúñÁÉÍÓÚÑ]
  * Caracteres Especiales
  */
  
-ARROBA              "@"
-ESP                 " "
-COM                 "\""
-NUMERAL             "#"
-PREGUNTA_ABRE       "¿"
-PREGUNTA_CIERRA     "?"
-COMENTARIO_ABRE     "*/"
-COMENTARIO_CIERRA   "/*"
-COMA                ","
-PUNTO               "."
-BLOQUE_ABRE         "{"
-BLOQUE_CIERRA       "}"
-CORCHETE_ABRE       "["
-CORCHETE_CIERRA     "]"
-PAR_ABRE            "("
-PAR_CIERRA          ")"
-ADMIRACION_ABRE     "¡"
-ADMIRACION_CIERRA   "!"
-FIN_SENTENCIA       ";"
-DOS_PUNTOS          ":"
+ARROBA				"@"
+ESP					" "
+COM					"\""
+NUMERAL				"#"
+PREGUNTA_ABRE		"¿"
+PREGUNTA_CIERRA		"?"
+COMENTARIO_ABRE		"*/"
+COMENTARIO_CIERRA	"/*"
+COMA				","
+PUNTO				"."
+BLOQUE_ABRE			"{"
+BLOQUE_CIERRA		"}"
+CORCHETE_ABRE		"["
+CORCHETE_CIERRA		"]"
+PAR_ABRE			"("
+PAR_CIERRA			")"
+ADMIRACION_ABRE		"¡"
+ADMIRACION_CIERRA	"!"
+FIN_SENTENCIA		";"
+DOS_PUNTOS			":"
 
 ID {LETRA}+
 
@@ -93,23 +93,23 @@ ID {LETRA}+
  * Operadores Comparacion
  */
  
-OP_COMP_IGUAL           "=="
-OP_COMP_MAYOR_IGUAL     ">="
-OP_COMP_MAYOR           ">"
-OP_COMP_MENOR           "<"
-OP_COMP_MENOR_IGUAL     "<="
-OP_COMP_DIST            "!="
+OP_COMP_IGUAL			"=="
+OP_COMP_MAYOR_IGUAL		">="
+OP_COMP_MAYOR			">"
+OP_COMP_MENOR			"<"
+OP_COMP_MENOR_IGUAL		"<="
+OP_COMP_DIST			"!="
 
 /*
  * Otros Operadores
  */
 
-OP_ASIG                 "="
-OP_COCIENTE             "/"
-OP_MULT                 "*"
-OP_SUMA                 "+"
-OP_RESTA                "-"
-OP_PORCENTAJE           "%"
+OP_ASIG					":="
+OP_COCIENTE				"/"
+OP_MULT					"*"
+OP_SUMA					"+"
+OP_RESTA				"-"
+OP_PORCENTAJE			"%"
 
 /*
  * Compuestos
@@ -135,12 +135,12 @@ DECLARACION_LISTA_VARIABLES {LISTA_DE_VARIABLES}{LISTA_DE_TIPOS}
 {RES_WHILE}			{return RES_WHILE;};
 {RES_ENDWHILE}		{return RES_ENDWHILE;};   
 {RES_IF}			{return RES_IF;};        
-{RES_ELSE}          {return RES_ELSE;};
+{RES_ELSE}			{return RES_ELSE;};
 {RES_ENDIF}			{return RES_ENDIF;};
-{RES_TIPO_ENTERO}   {return RES_TIPO_ENTERO;};
-{RES_TIPO_REAL}     {return RES_TIPO_REAL;};
-{RES_TIPO_STRING}   {return RES_TIPO_STRING;};
-{RES_CONST}         {return RES_CONST;};
+{RES_TIPO_ENTERO}	{return RES_TIPO_ENTERO;};
+{RES_TIPO_REAL}		{return RES_TIPO_REAL;};
+{RES_TIPO_STRING}	{return RES_TIPO_STRING;};
+{RES_CONST}			{return RES_CONST;};
 {RES_FOR}			{return RES_FOR;};
 {RES_TO}			{return RES_TO;};
 {RES_NEXT}			{return RES_NEXT;};
@@ -150,71 +150,72 @@ DECLARACION_LISTA_VARIABLES {LISTA_DE_VARIABLES}{LISTA_DE_TIPOS}
 {LISTA_DE_TIPOS}     
 {DECLARACION_LISTA_VARIABLES} 
 
-{COM}               
-{COMA}              {return COMA;};
-{PAR_ABRE}          {return PAR_ABRE;};
-{PAR_CIERRA}        {return PAR_CIERRA;};
-{BLOQUE_ABRE}       {return BLOQUE_ABRE;};
-{BLOQUE_CIERRA}     {return BLOQUE_CIERRA;};
-{FIN_SENTENCIA}     {return FIN_SENTENCIA;};
+{COM}
+{COMA}				{return COMA;};
+{PAR_ABRE}			{return PAR_ABRE;};
+{PAR_CIERRA}		{return PAR_CIERRA;};
+{BLOQUE_ABRE}		{return BLOQUE_ABRE;};
+{BLOQUE_CIERRA}		{return BLOQUE_CIERRA;};
+{FIN_SENTENCIA}		{return FIN_SENTENCIA;};
 
-{OP_COMP_IGUAL}         {return OP_COMP_IGUAL;};
-{OP_COMP_MAYOR_IGUAL}   {return OP_COMP_MAYOR_IGUAL;};
-{OP_COMP_MAYOR}         {return OP_COMP_MAYOR;};
-{OP_COMP_MENOR}         {return OP_COMP_MENOR;};
-{OP_COMP_MENOR_IGUAL}   {return OP_COMP_MENOR_IGUAL;};
-{OP_COMP_DIST}          {return OP_COMP_DIST;};
-{OP_ASIG}               {return OP_ASIG;};
+{OP_COMP_IGUAL}			{return OP_COMP_IGUAL;};
+{OP_COMP_MAYOR_IGUAL}	{return OP_COMP_MAYOR_IGUAL;};
+{OP_COMP_MAYOR}			{return OP_COMP_MAYOR;};
+{OP_COMP_MENOR}			{return OP_COMP_MENOR;};
+{OP_COMP_MENOR_IGUAL}	{return OP_COMP_MENOR_IGUAL;};
+{OP_COMP_DIST}			{return OP_COMP_DIST;};
+{OP_ASIG}				{return OP_ASIG;};
 
-{OP_COCIENTE}           {return OP_COCIENTE;};
-{OP_MULT}               {return OP_MULT;};
-{OP_SUMA}               {return OP_SUMA;};
-{OP_RESTA}              {return OP_RESTA;};
-{ADMIRACION_ABRE}       {return ADMIRACION_ABRE;};
-{ADMIRACION_CIERRA}     {return ADMIRACION_CIERRA;};
+{OP_COCIENTE}			{return OP_COCIENTE;};
+{OP_MULT}				{return OP_MULT;};
+{OP_SUMA}				{return OP_SUMA;};
+{OP_RESTA}				{return OP_RESTA;};
+{ADMIRACION_ABRE}		{return ADMIRACION_ABRE;};
+{ADMIRACION_CIERRA}		{return ADMIRACION_CIERRA;};
 
-{ID}                {
-                        sprintf(lexema,"%s", yytext);
-                        if(strlen(yytext) > 100) {
-                            mostrarError(yytext);
-                        }
-                            
-                        yylval.str_val=lexema;
-                        return ID;
-                    }
-                    
-{CTE_STRING}        {
-                        if(strlen(yytext) > 100) {
-                            mostrarError(yytext);
-                        }
-                        yylval.str_val=yytext;
-                        return CTE_STRING;
-                    }
+{ID}			{
+					sprintf(lexema,"%s", yytext);
+					if(strlen(yytext) > 100) {
+						mostrarError(yytext);
+					}
+					
+					yylval.str_val=lexema;
+					return ID;
+				}
 
-{CTE_INT}           { 
-                        if (strtol(yytext,(char **)NULL,10) < MININT ){
-                            printf("\nConstante entera fuera de rango: %s, minimo permitido %d", yytext, MININT);
-                        }else{
-                            if(strtol(yytext,(char **)NULL,10) > MAXINT){
-                                printf("\nConstante entera fuera de rango: %s, maximo permitido %d", yytext, MAXINT);
-                            } else {
-                                 yylval.int_val=strtol(yytext,(char **)NULL,10);
-                                return CTE_INT;
-                            }
-                        }
-                    };
+{CTE_STRING}	{
+					if(strlen(yytext) > 100) {
+						mostrarError(yytext);
+					}
+					yylval.str_val=yytext;
+					return CTE_STRING;
+				}
 
-{CTE_REAL}          {
-                        if (atof(yytext) < MINREAL || atof(yytext) > MAXREAL || strlen(yytext) > 32) {
-                            printf("\nConstante real fuera de rango: %s, minimo permitido %f", yytext, MINREAL);
-                        }
-						else {
-                            yylval.float_val = atof(yytext);
-                            return CTE_REAL;
-                        }
-                    };
+{CTE_INT}		{ 
+					if(strtol(yytext,(char **)NULL,10) < MININT) {
+						printf("\nConstante entera fuera de rango: %s, minimo permitido %d", yytext, MININT);
+					}
+					else {
+						if(strtol(yytext,(char **)NULL,10) > MAXINT) {
+							printf("\nConstante entera fuera de rango: %s, maximo permitido %d", yytext, MAXINT);
+						}else {
+							yylval.int_val = strtol(yytext, (char **) NULL, 10);
+							return CTE_INT;
+						}
+					}
+				};
 
-{COMENTARIO}        
+{CTE_REAL}		{
+					if(atof(yytext) < MINREAL || atof(yytext) > MAXREAL || strlen(yytext) > 32) {
+						printf("\nConstante real fuera de rango: %s, minimo permitido %f", yytext, MINREAL);
+					}
+					else {
+						yylval.float_val = atof(yytext);
+						return CTE_REAL;
+					}
+				};
+
+{COMENTARIO}
 {ESP}
 "\n"
 "\t"
@@ -224,8 +225,8 @@ DECLARACION_LISTA_VARIABLES {LISTA_DE_VARIABLES}{LISTA_DE_TIPOS}
 %%
 
 void mostrarError(char *error) {
-  printf("Mensaje de error: %s\n", error);
-  system ("Pause");
-  exit(2);
+	printf("Mensaje de error: %s\n", error);
+	system ("Pause");
+	exit(2);
 }
 
