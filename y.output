@@ -1,0 +1,1454 @@
+Terminals unused in grammar
+
+   RES_NOT
+   ARROBA
+   ESP
+   COM
+   NUMERAL
+   PREGUNTA_ABRE
+   PREGUNTA_CIERRA
+   COMENTARIO_ABRE
+   COMENTARIO_CIERRA
+   PUNTO
+   SIGN
+   BLOQUE_ABRE
+   BLOQUE_CIERRA
+   ADMIRACION_ABRE
+   ADMIRACION_CIERRA
+   OP_PORCENTAJE
+   COMENTARIO
+   LISTA_DE_VARIABLES
+   LISTA_DE_TIPOS
+   DECLARACION_LISTA_VARIABLES
+
+
+Grammar
+
+    0 $accept: p $end
+
+    1 p: programa
+
+    2 programa: bloque
+
+    3 bloque: sentencia
+    4       | bloque sentencia
+    5       | decvar
+
+    6 sentencia: asignacion FIN_SENTENCIA
+    7          | iteracion
+    8          | seleccion
+    9          | salida FIN_SENTENCIA
+   10          | entrada FIN_SENTENCIA
+
+   11 decvar: RES_DIM CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA
+
+   12 listavariables: ID
+   13               | listavariables COMA ID
+
+   14 listatipos: tipodato
+   15           | listatipos COMA tipodato
+
+   16 tipodato: RES_TIPO_ENTERO
+   17         | RES_TIPO_REAL
+   18         | RES_TIPO_STRING
+
+   19 salida: RES_DISPLAY mensaje
+
+   20 mensaje: ID
+   21        | CTE_STRING
+
+   22 entrada: RES_GET mensaje
+
+   23 $@1: /* empty */
+
+   24 asignacion: RES_CONST ID $@1 OP_ASIG constante
+
+   25 $@2: /* empty */
+
+   26 asignacion: ID $@2 OP_ASIG expresion
+
+   27 iteracion: RES_WHILE PAR_ABRE condicion PAR_CIERRA programa RES_ENDWHILE
+   28          | RES_WHILE ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE
+   29          | RES_FOR ID OP_ASIG expresion RES_TO expresion programa RES_NEXT ID
+   30          | RES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID
+
+   31 seleccion: RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ELSE programa RES_ENDIF
+   32          | RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ENDIF
+
+   33 condicion: comparacion
+   34          | condicion RES_AND comparacion
+   35          | condicion RES_OR comparacion
+
+   36 comparacion: expresion comparador expresion
+
+   37 comparador: OP_COMP_IGUAL
+   38           | OP_COMP_DIST
+   39           | OP_COMP_MAYOR
+   40           | OP_COMP_MAYOR_IGUAL
+   41           | OP_COMP_MENOR
+   42           | OP_COMP_MENOR_IGUAL
+
+   43 expresion: expresion OP_SUMA termino
+   44          | expresion OP_RESTA termino
+   45          | termino
+
+   46 lista: expresion
+   47      | lista COMA expresion
+
+   48 termino: termino OP_MULT factor
+   49        | termino OP_COCIENTE factor
+   50        | factor
+
+   51 factor: PAR_ABRE expresion PAR_CIERRA
+   52       | ID
+   53       | constante
+
+   54 constante: CTE_STRING
+   55          | CTE_INT
+   56          | CTE_REAL
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+RES_DIM (258) 11
+RES_AS (259) 11
+RES_WHILE (260) 27 28
+RES_ENDWHILE (261) 27 28
+RES_DO (262) 28
+RES_IF (263) 31 32
+RES_AND (264) 34
+RES_OR (265) 35
+RES_NOT (266)
+RES_DISPLAY (267) 19
+RES_GET (268) 22
+RES_ELSE (269) 31
+RES_ENDIF (270) 31 32
+RES_TIPO_ENTERO (271) 16
+RES_TIPO_REAL (272) 17
+RES_TIPO_STRING (273) 18
+RES_CONST (274) 24
+RES_FOR (275) 29 30
+RES_IN (276) 28
+RES_NEXT (277) 29 30
+RES_TO (278) 29 30
+RES_STEP (279) 30
+ARROBA (280)
+ESP (281)
+COM (282)
+NUMERAL (283)
+PREGUNTA_ABRE (284)
+PREGUNTA_CIERRA (285)
+COMENTARIO_ABRE (286)
+COMENTARIO_CIERRA (287)
+COMA (288) 13 15 47
+PUNTO (289)
+SIGN (290)
+BLOQUE_ABRE (291)
+BLOQUE_CIERRA (292)
+CORCHETE_ABRE (293) 11 28
+CORCHETE_CIERRA (294) 11 28
+PAR_ABRE (295) 27 31 32 51
+PAR_CIERRA (296) 27 31 32 51
+ADMIRACION_ABRE (297)
+ADMIRACION_CIERRA (298)
+FIN_SENTENCIA (299) 6 9 10
+ID (300) 12 13 20 24 26 28 29 30 52
+OP_COMP_IGUAL (301) 37
+OP_COMP_MAYOR_IGUAL (302) 40
+OP_COMP_MAYOR (303) 39
+OP_COMP_MENOR (304) 41
+OP_COMP_MENOR_IGUAL (305) 42
+OP_COMP_DIST (306) 38
+OP_ASIG (307) 24 26 29 30
+OP_COCIENTE (308) 49
+OP_MULT (309) 48
+OP_SUMA (310) 43
+OP_RESTA (311) 44
+OP_PORCENTAJE (312)
+COMENTARIO (313)
+CTE_STRING (314) 21 54
+CTE_REAL (315) 56
+CTE_INT (316) 30 55
+LISTA_DE_VARIABLES (317)
+LISTA_DE_TIPOS (318)
+DECLARACION_LISTA_VARIABLES (319)
+
+
+Nonterminals, with rules where they appear
+
+$accept (65)
+    on left: 0
+p (66)
+    on left: 1, on right: 0
+programa (67)
+    on left: 2, on right: 1 27 28 29 30 31 32
+bloque (68)
+    on left: 3 4 5, on right: 2 4
+sentencia (69)
+    on left: 6 7 8 9 10, on right: 3 4
+decvar (70)
+    on left: 11, on right: 5
+listavariables (71)
+    on left: 12 13, on right: 11 13
+listatipos (72)
+    on left: 14 15, on right: 11 15
+tipodato (73)
+    on left: 16 17 18, on right: 14 15
+salida (74)
+    on left: 19, on right: 9
+mensaje (75)
+    on left: 20 21, on right: 19 22
+entrada (76)
+    on left: 22, on right: 10
+asignacion (77)
+    on left: 24 26, on right: 6
+$@1 (78)
+    on left: 23, on right: 24
+$@2 (79)
+    on left: 25, on right: 26
+iteracion (80)
+    on left: 27 28 29 30, on right: 7
+seleccion (81)
+    on left: 31 32, on right: 8
+condicion (82)
+    on left: 33 34 35, on right: 27 31 32 34 35
+comparacion (83)
+    on left: 36, on right: 33 34 35
+comparador (84)
+    on left: 37 38 39 40 41 42, on right: 36
+expresion (85)
+    on left: 43 44 45, on right: 26 29 30 36 43 44 46 47 51
+lista (86)
+    on left: 46 47, on right: 28 47
+termino (87)
+    on left: 48 49 50, on right: 43 44 45 48 49
+factor (88)
+    on left: 51 52 53, on right: 48 49 50
+constante (89)
+    on left: 54 55 56, on right: 24 53
+
+
+state 0
+
+    0 $accept: . p $end
+
+    RES_DIM      shift, and go to state 1
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    ID           shift, and go to state 8
+
+    p           go to state 9
+    programa    go to state 10
+    bloque      go to state 11
+    sentencia   go to state 12
+    decvar      go to state 13
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 1
+
+   11 decvar: RES_DIM . CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA
+
+    CORCHETE_ABRE  shift, and go to state 19
+
+
+state 2
+
+   27 iteracion: RES_WHILE . PAR_ABRE condicion PAR_CIERRA programa RES_ENDWHILE
+   28          | RES_WHILE . ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE
+
+    PAR_ABRE  shift, and go to state 20
+    ID        shift, and go to state 21
+
+
+state 3
+
+   31 seleccion: RES_IF . PAR_ABRE condicion PAR_CIERRA programa RES_ELSE programa RES_ENDIF
+   32          | RES_IF . PAR_ABRE condicion PAR_CIERRA programa RES_ENDIF
+
+    PAR_ABRE  shift, and go to state 22
+
+
+state 4
+
+   19 salida: RES_DISPLAY . mensaje
+
+    ID          shift, and go to state 23
+    CTE_STRING  shift, and go to state 24
+
+    mensaje  go to state 25
+
+
+state 5
+
+   22 entrada: RES_GET . mensaje
+
+    ID          shift, and go to state 23
+    CTE_STRING  shift, and go to state 24
+
+    mensaje  go to state 26
+
+
+state 6
+
+   24 asignacion: RES_CONST . ID $@1 OP_ASIG constante
+
+    ID  shift, and go to state 27
+
+
+state 7
+
+   29 iteracion: RES_FOR . ID OP_ASIG expresion RES_TO expresion programa RES_NEXT ID
+   30          | RES_FOR . ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID
+
+    ID  shift, and go to state 28
+
+
+state 8
+
+   26 asignacion: ID . $@2 OP_ASIG expresion
+
+    $default  reduce using rule 25 ($@2)
+
+    $@2  go to state 29
+
+
+state 9
+
+    0 $accept: p . $end
+
+    $end  shift, and go to state 30
+
+
+state 10
+
+    1 p: programa .
+
+    $default  reduce using rule 1 (p)
+
+
+state 11
+
+    2 programa: bloque .
+    4 bloque: bloque . sentencia
+
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    ID           shift, and go to state 8
+
+    $default  reduce using rule 2 (programa)
+
+    sentencia   go to state 31
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 12
+
+    3 bloque: sentencia .
+
+    $default  reduce using rule 3 (bloque)
+
+
+state 13
+
+    5 bloque: decvar .
+
+    $default  reduce using rule 5 (bloque)
+
+
+state 14
+
+    9 sentencia: salida . FIN_SENTENCIA
+
+    FIN_SENTENCIA  shift, and go to state 32
+
+
+state 15
+
+   10 sentencia: entrada . FIN_SENTENCIA
+
+    FIN_SENTENCIA  shift, and go to state 33
+
+
+state 16
+
+    6 sentencia: asignacion . FIN_SENTENCIA
+
+    FIN_SENTENCIA  shift, and go to state 34
+
+
+state 17
+
+    7 sentencia: iteracion .
+
+    $default  reduce using rule 7 (sentencia)
+
+
+state 18
+
+    8 sentencia: seleccion .
+
+    $default  reduce using rule 8 (sentencia)
+
+
+state 19
+
+   11 decvar: RES_DIM CORCHETE_ABRE . listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA
+
+    ID  shift, and go to state 35
+
+    listavariables  go to state 36
+
+
+state 20
+
+   27 iteracion: RES_WHILE PAR_ABRE . condicion PAR_CIERRA programa RES_ENDWHILE
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    condicion    go to state 42
+    comparacion  go to state 43
+    expresion    go to state 44
+    termino      go to state 45
+    factor       go to state 46
+    constante    go to state 47
+
+
+state 21
+
+   28 iteracion: RES_WHILE ID . RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE
+
+    RES_IN  shift, and go to state 48
+
+
+state 22
+
+   31 seleccion: RES_IF PAR_ABRE . condicion PAR_CIERRA programa RES_ELSE programa RES_ENDIF
+   32          | RES_IF PAR_ABRE . condicion PAR_CIERRA programa RES_ENDIF
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    condicion    go to state 49
+    comparacion  go to state 43
+    expresion    go to state 44
+    termino      go to state 45
+    factor       go to state 46
+    constante    go to state 47
+
+
+state 23
+
+   20 mensaje: ID .
+
+    $default  reduce using rule 20 (mensaje)
+
+
+state 24
+
+   21 mensaje: CTE_STRING .
+
+    $default  reduce using rule 21 (mensaje)
+
+
+state 25
+
+   19 salida: RES_DISPLAY mensaje .
+
+    $default  reduce using rule 19 (salida)
+
+
+state 26
+
+   22 entrada: RES_GET mensaje .
+
+    $default  reduce using rule 22 (entrada)
+
+
+state 27
+
+   24 asignacion: RES_CONST ID . $@1 OP_ASIG constante
+
+    $default  reduce using rule 23 ($@1)
+
+    $@1  go to state 50
+
+
+state 28
+
+   29 iteracion: RES_FOR ID . OP_ASIG expresion RES_TO expresion programa RES_NEXT ID
+   30          | RES_FOR ID . OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID
+
+    OP_ASIG  shift, and go to state 51
+
+
+state 29
+
+   26 asignacion: ID $@2 . OP_ASIG expresion
+
+    OP_ASIG  shift, and go to state 52
+
+
+state 30
+
+    0 $accept: p $end .
+
+    $default  accept
+
+
+state 31
+
+    4 bloque: bloque sentencia .
+
+    $default  reduce using rule 4 (bloque)
+
+
+state 32
+
+    9 sentencia: salida FIN_SENTENCIA .
+
+    $default  reduce using rule 9 (sentencia)
+
+
+state 33
+
+   10 sentencia: entrada FIN_SENTENCIA .
+
+    $default  reduce using rule 10 (sentencia)
+
+
+state 34
+
+    6 sentencia: asignacion FIN_SENTENCIA .
+
+    $default  reduce using rule 6 (sentencia)
+
+
+state 35
+
+   12 listavariables: ID .
+
+    $default  reduce using rule 12 (listavariables)
+
+
+state 36
+
+   11 decvar: RES_DIM CORCHETE_ABRE listavariables . CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA
+   13 listavariables: listavariables . COMA ID
+
+    COMA             shift, and go to state 53
+    CORCHETE_CIERRA  shift, and go to state 54
+
+
+state 37
+
+   51 factor: PAR_ABRE . expresion PAR_CIERRA
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    expresion  go to state 55
+    termino    go to state 45
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 38
+
+   52 factor: ID .
+
+    $default  reduce using rule 52 (factor)
+
+
+state 39
+
+   54 constante: CTE_STRING .
+
+    $default  reduce using rule 54 (constante)
+
+
+state 40
+
+   56 constante: CTE_REAL .
+
+    $default  reduce using rule 56 (constante)
+
+
+state 41
+
+   55 constante: CTE_INT .
+
+    $default  reduce using rule 55 (constante)
+
+
+state 42
+
+   27 iteracion: RES_WHILE PAR_ABRE condicion . PAR_CIERRA programa RES_ENDWHILE
+   34 condicion: condicion . RES_AND comparacion
+   35          | condicion . RES_OR comparacion
+
+    RES_AND     shift, and go to state 56
+    RES_OR      shift, and go to state 57
+    PAR_CIERRA  shift, and go to state 58
+
+
+state 43
+
+   33 condicion: comparacion .
+
+    $default  reduce using rule 33 (condicion)
+
+
+state 44
+
+   36 comparacion: expresion . comparador expresion
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+
+    OP_COMP_IGUAL        shift, and go to state 59
+    OP_COMP_MAYOR_IGUAL  shift, and go to state 60
+    OP_COMP_MAYOR        shift, and go to state 61
+    OP_COMP_MENOR        shift, and go to state 62
+    OP_COMP_MENOR_IGUAL  shift, and go to state 63
+    OP_COMP_DIST         shift, and go to state 64
+    OP_SUMA              shift, and go to state 65
+    OP_RESTA             shift, and go to state 66
+
+    comparador  go to state 67
+
+
+state 45
+
+   45 expresion: termino .
+   48 termino: termino . OP_MULT factor
+   49        | termino . OP_COCIENTE factor
+
+    OP_COCIENTE  shift, and go to state 68
+    OP_MULT      shift, and go to state 69
+
+    $default  reduce using rule 45 (expresion)
+
+
+state 46
+
+   50 termino: factor .
+
+    $default  reduce using rule 50 (termino)
+
+
+state 47
+
+   53 factor: constante .
+
+    $default  reduce using rule 53 (factor)
+
+
+state 48
+
+   28 iteracion: RES_WHILE ID RES_IN . CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE
+
+    CORCHETE_ABRE  shift, and go to state 70
+
+
+state 49
+
+   31 seleccion: RES_IF PAR_ABRE condicion . PAR_CIERRA programa RES_ELSE programa RES_ENDIF
+   32          | RES_IF PAR_ABRE condicion . PAR_CIERRA programa RES_ENDIF
+   34 condicion: condicion . RES_AND comparacion
+   35          | condicion . RES_OR comparacion
+
+    RES_AND     shift, and go to state 56
+    RES_OR      shift, and go to state 57
+    PAR_CIERRA  shift, and go to state 71
+
+
+state 50
+
+   24 asignacion: RES_CONST ID $@1 . OP_ASIG constante
+
+    OP_ASIG  shift, and go to state 72
+
+
+state 51
+
+   29 iteracion: RES_FOR ID OP_ASIG . expresion RES_TO expresion programa RES_NEXT ID
+   30          | RES_FOR ID OP_ASIG . expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    expresion  go to state 73
+    termino    go to state 45
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 52
+
+   26 asignacion: ID $@2 OP_ASIG . expresion
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    expresion  go to state 74
+    termino    go to state 45
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 53
+
+   13 listavariables: listavariables COMA . ID
+
+    ID  shift, and go to state 75
+
+
+state 54
+
+   11 decvar: RES_DIM CORCHETE_ABRE listavariables CORCHETE_CIERRA . RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA
+
+    RES_AS  shift, and go to state 76
+
+
+state 55
+
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+   51 factor: PAR_ABRE expresion . PAR_CIERRA
+
+    PAR_CIERRA  shift, and go to state 77
+    OP_SUMA     shift, and go to state 65
+    OP_RESTA    shift, and go to state 66
+
+
+state 56
+
+   34 condicion: condicion RES_AND . comparacion
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    comparacion  go to state 78
+    expresion    go to state 44
+    termino      go to state 45
+    factor       go to state 46
+    constante    go to state 47
+
+
+state 57
+
+   35 condicion: condicion RES_OR . comparacion
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    comparacion  go to state 79
+    expresion    go to state 44
+    termino      go to state 45
+    factor       go to state 46
+    constante    go to state 47
+
+
+state 58
+
+   27 iteracion: RES_WHILE PAR_ABRE condicion PAR_CIERRA . programa RES_ENDWHILE
+
+    RES_DIM      shift, and go to state 1
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    ID           shift, and go to state 8
+
+    programa    go to state 80
+    bloque      go to state 11
+    sentencia   go to state 12
+    decvar      go to state 13
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 59
+
+   37 comparador: OP_COMP_IGUAL .
+
+    $default  reduce using rule 37 (comparador)
+
+
+state 60
+
+   40 comparador: OP_COMP_MAYOR_IGUAL .
+
+    $default  reduce using rule 40 (comparador)
+
+
+state 61
+
+   39 comparador: OP_COMP_MAYOR .
+
+    $default  reduce using rule 39 (comparador)
+
+
+state 62
+
+   41 comparador: OP_COMP_MENOR .
+
+    $default  reduce using rule 41 (comparador)
+
+
+state 63
+
+   42 comparador: OP_COMP_MENOR_IGUAL .
+
+    $default  reduce using rule 42 (comparador)
+
+
+state 64
+
+   38 comparador: OP_COMP_DIST .
+
+    $default  reduce using rule 38 (comparador)
+
+
+state 65
+
+   43 expresion: expresion OP_SUMA . termino
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    termino    go to state 81
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 66
+
+   44 expresion: expresion OP_RESTA . termino
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    termino    go to state 82
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 67
+
+   36 comparacion: expresion comparador . expresion
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    expresion  go to state 83
+    termino    go to state 45
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 68
+
+   49 termino: termino OP_COCIENTE . factor
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    factor     go to state 84
+    constante  go to state 47
+
+
+state 69
+
+   48 termino: termino OP_MULT . factor
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    factor     go to state 85
+    constante  go to state 47
+
+
+state 70
+
+   28 iteracion: RES_WHILE ID RES_IN CORCHETE_ABRE . lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    expresion  go to state 86
+    lista      go to state 87
+    termino    go to state 45
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 71
+
+   31 seleccion: RES_IF PAR_ABRE condicion PAR_CIERRA . programa RES_ELSE programa RES_ENDIF
+   32          | RES_IF PAR_ABRE condicion PAR_CIERRA . programa RES_ENDIF
+
+    RES_DIM      shift, and go to state 1
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    ID           shift, and go to state 8
+
+    programa    go to state 88
+    bloque      go to state 11
+    sentencia   go to state 12
+    decvar      go to state 13
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 72
+
+   24 asignacion: RES_CONST ID $@1 OP_ASIG . constante
+
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    constante  go to state 89
+
+
+state 73
+
+   29 iteracion: RES_FOR ID OP_ASIG expresion . RES_TO expresion programa RES_NEXT ID
+   30          | RES_FOR ID OP_ASIG expresion . RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+
+    RES_TO    shift, and go to state 90
+    OP_SUMA   shift, and go to state 65
+    OP_RESTA  shift, and go to state 66
+
+
+state 74
+
+   26 asignacion: ID $@2 OP_ASIG expresion .
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+
+    OP_SUMA   shift, and go to state 65
+    OP_RESTA  shift, and go to state 66
+
+    $default  reduce using rule 26 (asignacion)
+
+
+state 75
+
+   13 listavariables: listavariables COMA ID .
+
+    $default  reduce using rule 13 (listavariables)
+
+
+state 76
+
+   11 decvar: RES_DIM CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS . CORCHETE_ABRE listatipos CORCHETE_CIERRA
+
+    CORCHETE_ABRE  shift, and go to state 91
+
+
+state 77
+
+   51 factor: PAR_ABRE expresion PAR_CIERRA .
+
+    $default  reduce using rule 51 (factor)
+
+
+state 78
+
+   34 condicion: condicion RES_AND comparacion .
+
+    $default  reduce using rule 34 (condicion)
+
+
+state 79
+
+   35 condicion: condicion RES_OR comparacion .
+
+    $default  reduce using rule 35 (condicion)
+
+
+state 80
+
+   27 iteracion: RES_WHILE PAR_ABRE condicion PAR_CIERRA programa . RES_ENDWHILE
+
+    RES_ENDWHILE  shift, and go to state 92
+
+
+state 81
+
+   43 expresion: expresion OP_SUMA termino .
+   48 termino: termino . OP_MULT factor
+   49        | termino . OP_COCIENTE factor
+
+    OP_COCIENTE  shift, and go to state 68
+    OP_MULT      shift, and go to state 69
+
+    $default  reduce using rule 43 (expresion)
+
+
+state 82
+
+   44 expresion: expresion OP_RESTA termino .
+   48 termino: termino . OP_MULT factor
+   49        | termino . OP_COCIENTE factor
+
+    OP_COCIENTE  shift, and go to state 68
+    OP_MULT      shift, and go to state 69
+
+    $default  reduce using rule 44 (expresion)
+
+
+state 83
+
+   36 comparacion: expresion comparador expresion .
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+
+    OP_SUMA   shift, and go to state 65
+    OP_RESTA  shift, and go to state 66
+
+    $default  reduce using rule 36 (comparacion)
+
+
+state 84
+
+   49 termino: termino OP_COCIENTE factor .
+
+    $default  reduce using rule 49 (termino)
+
+
+state 85
+
+   48 termino: termino OP_MULT factor .
+
+    $default  reduce using rule 48 (termino)
+
+
+state 86
+
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+   46 lista: expresion .
+
+    OP_SUMA   shift, and go to state 65
+    OP_RESTA  shift, and go to state 66
+
+    $default  reduce using rule 46 (lista)
+
+
+state 87
+
+   28 iteracion: RES_WHILE ID RES_IN CORCHETE_ABRE lista . CORCHETE_CIERRA RES_DO programa RES_ENDWHILE
+   47 lista: lista . COMA expresion
+
+    COMA             shift, and go to state 93
+    CORCHETE_CIERRA  shift, and go to state 94
+
+
+state 88
+
+   31 seleccion: RES_IF PAR_ABRE condicion PAR_CIERRA programa . RES_ELSE programa RES_ENDIF
+   32          | RES_IF PAR_ABRE condicion PAR_CIERRA programa . RES_ENDIF
+
+    RES_ELSE   shift, and go to state 95
+    RES_ENDIF  shift, and go to state 96
+
+
+state 89
+
+   24 asignacion: RES_CONST ID $@1 OP_ASIG constante .
+
+    $default  reduce using rule 24 (asignacion)
+
+
+state 90
+
+   29 iteracion: RES_FOR ID OP_ASIG expresion RES_TO . expresion programa RES_NEXT ID
+   30          | RES_FOR ID OP_ASIG expresion RES_TO . expresion RES_STEP CTE_INT programa RES_NEXT ID
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    expresion  go to state 97
+    termino    go to state 45
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 91
+
+   11 decvar: RES_DIM CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE . listatipos CORCHETE_CIERRA
+
+    RES_TIPO_ENTERO  shift, and go to state 98
+    RES_TIPO_REAL    shift, and go to state 99
+    RES_TIPO_STRING  shift, and go to state 100
+
+    listatipos  go to state 101
+    tipodato    go to state 102
+
+
+state 92
+
+   27 iteracion: RES_WHILE PAR_ABRE condicion PAR_CIERRA programa RES_ENDWHILE .
+
+    $default  reduce using rule 27 (iteracion)
+
+
+state 93
+
+   47 lista: lista COMA . expresion
+
+    PAR_ABRE    shift, and go to state 37
+    ID          shift, and go to state 38
+    CTE_STRING  shift, and go to state 39
+    CTE_REAL    shift, and go to state 40
+    CTE_INT     shift, and go to state 41
+
+    expresion  go to state 103
+    termino    go to state 45
+    factor     go to state 46
+    constante  go to state 47
+
+
+state 94
+
+   28 iteracion: RES_WHILE ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA . RES_DO programa RES_ENDWHILE
+
+    RES_DO  shift, and go to state 104
+
+
+state 95
+
+   31 seleccion: RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ELSE . programa RES_ENDIF
+
+    RES_DIM      shift, and go to state 1
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    ID           shift, and go to state 8
+
+    programa    go to state 105
+    bloque      go to state 11
+    sentencia   go to state 12
+    decvar      go to state 13
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 96
+
+   32 seleccion: RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ENDIF .
+
+    $default  reduce using rule 32 (seleccion)
+
+
+state 97
+
+   29 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion . programa RES_NEXT ID
+   30          | RES_FOR ID OP_ASIG expresion RES_TO expresion . RES_STEP CTE_INT programa RES_NEXT ID
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+
+    RES_DIM      shift, and go to state 1
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    RES_STEP     shift, and go to state 106
+    ID           shift, and go to state 8
+    OP_SUMA      shift, and go to state 65
+    OP_RESTA     shift, and go to state 66
+
+    programa    go to state 107
+    bloque      go to state 11
+    sentencia   go to state 12
+    decvar      go to state 13
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 98
+
+   16 tipodato: RES_TIPO_ENTERO .
+
+    $default  reduce using rule 16 (tipodato)
+
+
+state 99
+
+   17 tipodato: RES_TIPO_REAL .
+
+    $default  reduce using rule 17 (tipodato)
+
+
+state 100
+
+   18 tipodato: RES_TIPO_STRING .
+
+    $default  reduce using rule 18 (tipodato)
+
+
+state 101
+
+   11 decvar: RES_DIM CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos . CORCHETE_CIERRA
+   15 listatipos: listatipos . COMA tipodato
+
+    COMA             shift, and go to state 108
+    CORCHETE_CIERRA  shift, and go to state 109
+
+
+state 102
+
+   14 listatipos: tipodato .
+
+    $default  reduce using rule 14 (listatipos)
+
+
+state 103
+
+   43 expresion: expresion . OP_SUMA termino
+   44          | expresion . OP_RESTA termino
+   47 lista: lista COMA expresion .
+
+    OP_SUMA   shift, and go to state 65
+    OP_RESTA  shift, and go to state 66
+
+    $default  reduce using rule 47 (lista)
+
+
+state 104
+
+   28 iteracion: RES_WHILE ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO . programa RES_ENDWHILE
+
+    RES_DIM      shift, and go to state 1
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    ID           shift, and go to state 8
+
+    programa    go to state 110
+    bloque      go to state 11
+    sentencia   go to state 12
+    decvar      go to state 13
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 105
+
+   31 seleccion: RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ELSE programa . RES_ENDIF
+
+    RES_ENDIF  shift, and go to state 111
+
+
+state 106
+
+   30 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP . CTE_INT programa RES_NEXT ID
+
+    CTE_INT  shift, and go to state 112
+
+
+state 107
+
+   29 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion programa . RES_NEXT ID
+
+    RES_NEXT  shift, and go to state 113
+
+
+state 108
+
+   15 listatipos: listatipos COMA . tipodato
+
+    RES_TIPO_ENTERO  shift, and go to state 98
+    RES_TIPO_REAL    shift, and go to state 99
+    RES_TIPO_STRING  shift, and go to state 100
+
+    tipodato  go to state 114
+
+
+state 109
+
+   11 decvar: RES_DIM CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA .
+
+    $default  reduce using rule 11 (decvar)
+
+
+state 110
+
+   28 iteracion: RES_WHILE ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa . RES_ENDWHILE
+
+    RES_ENDWHILE  shift, and go to state 115
+
+
+state 111
+
+   31 seleccion: RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ELSE programa RES_ENDIF .
+
+    $default  reduce using rule 31 (seleccion)
+
+
+state 112
+
+   30 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT . programa RES_NEXT ID
+
+    RES_DIM      shift, and go to state 1
+    RES_WHILE    shift, and go to state 2
+    RES_IF       shift, and go to state 3
+    RES_DISPLAY  shift, and go to state 4
+    RES_GET      shift, and go to state 5
+    RES_CONST    shift, and go to state 6
+    RES_FOR      shift, and go to state 7
+    ID           shift, and go to state 8
+
+    programa    go to state 116
+    bloque      go to state 11
+    sentencia   go to state 12
+    decvar      go to state 13
+    salida      go to state 14
+    entrada     go to state 15
+    asignacion  go to state 16
+    iteracion   go to state 17
+    seleccion   go to state 18
+
+
+state 113
+
+   29 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion programa RES_NEXT . ID
+
+    ID  shift, and go to state 117
+
+
+state 114
+
+   15 listatipos: listatipos COMA tipodato .
+
+    $default  reduce using rule 15 (listatipos)
+
+
+state 115
+
+   28 iteracion: RES_WHILE ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE .
+
+    $default  reduce using rule 28 (iteracion)
+
+
+state 116
+
+   30 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa . RES_NEXT ID
+
+    RES_NEXT  shift, and go to state 118
+
+
+state 117
+
+   29 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion programa RES_NEXT ID .
+
+    $default  reduce using rule 29 (iteracion)
+
+
+state 118
+
+   30 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT . ID
+
+    ID  shift, and go to state 119
+
+
+state 119
+
+   30 iteracion: RES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID .
+
+    $default  reduce using rule 30 (iteracion)

@@ -1,22 +1,22 @@
-
 %{
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "y.tab.h"
-#include "tabla_simbolos.h"
+#include "ts.h"
 
-int yystopparser=0;
+int yystopparser = 0;
 FILE  *yyin;
 
-  int yyerror();
-  int yylex();
+int yyerror();
+int yylex();
 
 %}
 
 %union {
-    int int_val;
-    double float_val;
-    char *str_val;
+	int int_val;
+	double float_val;
+	char *str_val;
 }
 
 %type <str_val> ID CTE_STRING
@@ -26,18 +26,25 @@ FILE  *yyin;
 %token RES_DIM
 %token RES_AS
 %token RES_WHILE
+%token RES_ENDWHILE
+%token RES_DO
 %token RES_IF
 %token RES_AND
 %token RES_OR
 %token RES_NOT
-%token RES_PUT
+%token RES_DISPLAY
 %token RES_GET
 %token RES_ELSE
+%token RES_ENDIF
 %token RES_TIPO_ENTERO
 %token RES_TIPO_REAL
 %token RES_TIPO_STRING
 %token RES_CONST
-%token RES_MAXIMO
+%token RES_FOR
+%token RES_IN
+%token RES_NEXT
+%token RES_TO
+%token RES_STEP
 
 %token ARROBA
 %token ESP
@@ -84,25 +91,23 @@ FILE  *yyin;
 %token CTE_REAL
 %token CTE_INT
 
-
 %token LISTA_DE_VARIABLES
 %token LISTA_DE_TIPOS
-
 %token DECLARACION_LISTA_VARIABLES
 
 %%
 p:
-    programa {printf("\nFIN PROGRAMA");asignarValorConstante();crearArchivoTS();} ;
+    programa{printf("\nFIN PROGRAMA");asignarValorConstante();crearArchivoTS();} ;
 
 programa: 
-    bloque ;
+    bloque;
 
 bloque:
     sentencia |
     bloque sentencia |
-    decvar;
+	decvar;
 
-sentencia:  	   
+sentencia:
 	asignacion FIN_SENTENCIA |
     iteracion |
     seleccion |
@@ -110,10 +115,10 @@ sentencia:
     entrada FIN_SENTENCIA;
 
 decvar:
-    RES_DIM OP_COMP_MENOR variables OP_COMP_MAYOR RES_AS OP_COMP_MENOR listatipos OP_COMP_MAYOR {printf("\nDIM OP_COMP_MENOR variables OP_COMP_MAYOR RES_AS OP_COMP_MENOR listatipos OP_COMP_MAYOR");}; 
-
-variables:
-    ID {cargarEnTS($1, 7);} | variables COMA ID {cargarEnTS($3, 7);};
+    RES_DIM CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA {printf("\nDIM CORCHETE_ABRE listavariables CORCHETE_CIERRA RES_AS CORCHETE_ABRE listatipos CORCHETE_CIERRA");};
+	
+listavariables:
+    ID {cargarEnTS($1, 7);}; | listavariables COMA ID {cargarEnTS($3, 7);};
 
 listatipos:
     tipodato | listatipos COMA tipodato;
@@ -124,7 +129,7 @@ tipodato:
     RES_TIPO_STRING;
 
 salida:
-    RES_PUT mensaje {printf("\nPUT mensaje");};
+    RES_DISPLAY mensaje {printf("\nDISPLAY mensaje");};
 
  mensaje:
     ID {cargarEnTS($1, 7);} |
@@ -138,12 +143,15 @@ asignacion:
     ID {cargarEnTS($1, 7);} OP_ASIG expresion {printf("\nID OP_ASIG expresion");};
 
 iteracion:
-    RES_WHILE PAR_ABRE condicion PAR_CIERRA BLOQUE_ABRE programa BLOQUE_CIERRA {printf("\nWHILE PAR_ABRE condicion PAR_CIERRA BLOQUE_ABRE programa BLOQUE_CIERRA");};
+    RES_WHILE PAR_ABRE condicion PAR_CIERRA programa RES_ENDWHILE {printf("\nWHILE PAR_ABRE condicion PAR_CIERRA programa RES_ENDWHILE");}; |
+	RES_WHILE ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE {printf("\nWHILE ID RES_IN CORCHETE_ABRE lista CORCHETE_CIERRA RES_DO programa RES_ENDWHILE");}; |
+	RES_FOR ID OP_ASIG expresion RES_TO expresion programa RES_NEXT ID {printf("\nRES_FOR ID OP_ASIG expresion RES_TO expresion programa RES_NEXT ID");}; |
+	RES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID {printf("\nRES_FOR ID OP_ASIG expresion RES_TO expresion RES_STEP CTE_INT programa RES_NEXT ID");};
 
 seleccion:
-    RES_IF PAR_ABRE condicion PAR_CIERRA BLOQUE_ABRE programa BLOQUE_CIERRA RES_ELSE BLOQUE_ABRE programa BLOQUE_CIERRA {printf("\nIF PAR_ABRE condicion PAR_CIERRA BLOQUE_ABRE programa BLOQUE_CIERRA ELSE BLOQUE_ABRE programa BLOQUE_CIERRA");};|
-    RES_IF PAR_ABRE condicion PAR_CIERRA BLOQUE_ABRE programa BLOQUE_CIERRA {printf("\nIF PAR_ABRE condicion PAR_CIERRA BLOQUE_ABRE programa BLOQUE_CIERRA");};|
-    RES_IF PAR_ABRE condicion PAR_CIERRA sentencia {printf("\nIF PAR_ABRE condicion PAR_CIERRA sentencia");};
+    RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ELSE programa RES_ENDIF {printf("\nRES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ELSE programa RES_ENDIF");};|
+    RES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ENDIF {printf("\nRES_IF PAR_ABRE condicion PAR_CIERRA programa RES_ENDIF");}; /*|
+    RES_IF PAR_ABRE condicion PAR_CIERRA sentencia {printf("\nRES_IF PAR_ABRE condicion PAR_CIERRA sentencia");};*/
 
 condicion:
     comparacion |
@@ -170,18 +178,17 @@ termino:
     factor;
 
 factor:
-    RES_MAXIMO PAR_ABRE lista PAR_CIERRA {printf("\nMAXIMO PAR_ABRE lista PAR_CIERRA");}; |
     PAR_ABRE expresion PAR_CIERRA |
-    ID {cargarEnTS($1, 7);}|
+    ID {cargarEnTS($1, 7);} |
     constante;
 
 constante:
-    CTE_STRING {cargarEnTS($1, 6);}|
+    CTE_STRING {cargarEnTS($1, 6);} |
     CTE_INT {
                 char valorString[100];
                 sprintf(valorString, "%d", $1);
                 cargarEnTS(valorString, 2);
-            }|
+            } |
     CTE_REAL{
                 char valorString[100];
                 sprintf(valorString, "%lf", $1);
@@ -191,24 +198,20 @@ constante:
 %%
 
 
-int main(int argc, char *argv[])
-{
-    if((yyin = fopen(argv[1], "rt"))==NULL)
-    {
-        printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);
-       
-    }
-    else
-    { 
-        
-        yyparse();
-        
-    }
+int main(int argc, char *argv[]) {
+
+	if((yyin = fopen(argv[1], "rt")) == NULL) {
+		printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);
+	}
+	else {        
+		yyparse();
+	}
+	
 	fclose(yyin);
-        return 0;
+	return 0;
 }
-int yyerror(void)
-{
+
+int yyerror(void) {
     printf("\nError Sintactico\n");
 	exit (1);
 }

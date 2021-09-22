@@ -6,19 +6,20 @@
  * 		- Variables Globales
  */
 	
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "y.tab.h"
 
-    void mostrarError(char *);
+void mostrarError(char *);
 
-    FILE *yyin;
-    char *yyltext;
-    int MAXINT = 32768;
-    int MININT = -32768;
-    char lexema[100];
-    float MAXREAL = 2147483648;
-    float MINREAL = -2147483648;
+FILE *yyin;
+char *yyltext;
+int MAXINT = 32768;
+int MININT = -32768;
+char lexema[100];
+float MAXREAL = 2147483648;
+float MINREAL = -2147483648;
 
 %}
 
@@ -29,6 +30,7 @@
  * 		- Conjuntos
  * 		- Expresiones Regulares
  */
+ 
 %option noyywrap
 %option yylineno
 
@@ -57,7 +59,8 @@ RES_CONST			"CONST"
 RES_FOR				"FOR"
 RES_TO				"TO"
 RES_NEXT			"NEXT"
-
+RES_DO				"DO"
+RES_STEP			"STEP"
 
 DIGITO [0-9]
 LETRA [a-zA-ZáéíóúñÁÉÍÓÚÑ]
@@ -119,8 +122,9 @@ COMENTARIO {COMENTARIO_ABRE}({DIGITO}*|{ARROBA}*|{NUMERAL}*|{PREGUNTA_ABRE}*|{PR
 CTE_STRING  {COM}({DOS_PUNTOS}*|{ADMIRACION_ABRE}*|{ADMIRACION_CIERRA}*|{COMA}*|{PUNTO}*|{DIGITO}*|{ARROBA}*|{NUMERAL}*|{PREGUNTA_ABRE}*|{PREGUNTA_CIERRA}*|{LETRA}*|{ESP}*|{OP_PORCENTAJE}*)*{COM}   
 CTE_INT {OP_RESTA}?{DIGITO}+
 CTE_REAL {OP_RESTA}?(({DIGITO}*{PUNTO}{DIGITO}+)|({DIGITO}+{PUNTO}{DIGITO}*))
+
 LISTA_DE_VARIABLES {RES_DIM}{ESP}+{CORCHETE_ABRE}({ID}{COMA})*{ID}{CORCHETE_CIERRA}
-LISTA_DE_TIPOS {ESP}+{RES_AS}{ESP}+{CORCHETE_ABRE}(({RES_TIPO_ENTERO}|{RES_TIPO_REAL}){COMA})*({RES_TIPO_ENTERO}|{RES_TIPO_REAL}){CORCHETE_CIERRA}
+LISTA_DE_TIPOS {ESP}+{RES_AS}{ESP}+{CORCHETE_ABRE}(({RES_TIPO_ENTERO}|{RES_TIPO_REAL}|{RES_TIPO_STRING}){COMA})*({RES_TIPO_ENTERO}|{RES_TIPO_REAL}|{RES_TIPO_STRING}){CORCHETE_CIERRA}
 DECLARACION_LISTA_VARIABLES {LISTA_DE_VARIABLES}{LISTA_DE_TIPOS}
 
 %%
@@ -145,18 +149,23 @@ DECLARACION_LISTA_VARIABLES {LISTA_DE_VARIABLES}{LISTA_DE_TIPOS}
 {RES_TO}			{return RES_TO;};
 {RES_NEXT}			{return RES_NEXT;};
 {RES_IN}			{return RES_IN;};
+{RES_DO}			{return RES_DO;};
+{RES_STEP}			{return RES_STEP;};
 
 {LISTA_DE_VARIABLES} 
 {LISTA_DE_TIPOS}     
-{DECLARACION_LISTA_VARIABLES} 
+{DECLARACION_LISTA_VARIABLES}
 
 {COM}
 {COMA}				{return COMA;};
+{ESP}
 {PAR_ABRE}			{return PAR_ABRE;};
 {PAR_CIERRA}		{return PAR_CIERRA;};
 {BLOQUE_ABRE}		{return BLOQUE_ABRE;};
 {BLOQUE_CIERRA}		{return BLOQUE_CIERRA;};
 {FIN_SENTENCIA}		{return FIN_SENTENCIA;};
+{CORCHETE_ABRE}		{return CORCHETE_ABRE;};
+{CORCHETE_CIERRA}	{return CORCHETE_CIERRA;}; 
 
 {OP_COMP_IGUAL}			{return OP_COMP_IGUAL;};
 {OP_COMP_MAYOR_IGUAL}	{return OP_COMP_MAYOR_IGUAL;};
@@ -216,7 +225,6 @@ DECLARACION_LISTA_VARIABLES {LISTA_DE_VARIABLES}{LISTA_DE_TIPOS}
 				};
 
 {COMENTARIO}
-{ESP}
 "\n"
 "\t"
 "\n\t"
